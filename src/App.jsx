@@ -9,6 +9,13 @@ function coputeItitnialCounter(){
 function App() {
     const [counter =0,setCounter] =  useState( () => { return coputeItitnialCounter()});
 
+    const [state, setState] = useState({
+        title: "Counter",
+        date: new Date().toLocaleDateString("en-US"),
+    })
+
+
+
     function increment(){
         setCounter((prevCounter = 0) =>{
             return prevCounter + 1;
@@ -16,6 +23,15 @@ function App() {
     }
     function decrement(){
         setCounter(counter - 1)
+    }
+    function updateTitle(){
+        setState(prev =>
+        {
+            return {
+                ...prev,
+                title: 'dadadas',
+            }
+        })
     }
   return (
     <>
@@ -27,6 +43,8 @@ function App() {
           <h1>Counter {counter}</h1>
             <button onClick={increment}>Add</button>
             <button onClick={decrement}>Delete</button>
+           <pre>{JSON.stringify(state,null,2)}</pre>
+          <button onClick={updateTitle}>Increment</button>
       </p>
     </>
   )
