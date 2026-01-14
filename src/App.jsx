@@ -9,6 +9,11 @@ function coputeItitnialCounter(){
 function App() {
     const [counter =0,setCounter] =  useState( () => { return coputeItitnialCounter()});
 
+    const [state,setState] = useState({
+        count: 'dsaa',
+        date: Date.now()
+    })
+
     function increment(){
         setCounter((prevCounter = 0) =>{
             return prevCounter + 1;
