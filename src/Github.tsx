@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Search } from "./search";
 
 type SearchUserType = {
   login: string;
@@ -54,14 +55,7 @@ export const Github = () => {
 
   return (
     <div>
-      <div>
-        <input
-          value={tempSearch}
-          placeholder="searh"
-          onChange={(e) => setTempSearch(e.target.value)}
-        />
-        <button onClick={() => setSearchTempSearch(tempSearch)}>Search</button>
-      </div>
+      <Search value="" onSubmit={(term) => setSearchTempSearch(term)} />
       <ul>
         {users.map((user) => (
           <li
