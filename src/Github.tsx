@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Search } from "./search";
 import { Users } from "./Users";
+import { UserDetails } from "./UserDetails";
 
 type SearchUserType = {
   login: string;
@@ -39,9 +40,8 @@ export const Github = () => {
         onUserSelect={setSelectedUser}
       />
 
-      <h2>{selectedUser?.login ?? "User name"}</h2>
       <div>
-        {userDetails ? `Followers: ${userDetails.followers}` : "Loading..."}
+       <UserDetails username={selectedUser} />
       </div>
     </div>
   );
