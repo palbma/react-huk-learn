@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+
 type SearchPropsType = {
-   value: string;
-   onSubmit: (fixedValue: string) => void;
+  value: string;
+  onSubmit: (fixedValue: string) => void;
 };
- const [tempSearch, setTempSearch] = useState<string>("it-kamasutra");
+
 export const Search = (props: SearchPropsType) => {
-    return(
-        <div>
-        <input
-          value={tempSearch}
-          placeholder="searh"
-          onChange={(e) => setTempSearch(e.target.value)}
-        />
-        <button onClick={() => props.onSubmit(tempSearch)}>Search</button>
-      </div>
-    );
-    
+  const [tempSearch, setTempSearch] = useState<string>("it-kamasutra");
+
+  useEffect(() => {
+    setTempSearch(props.value);
+  }, [props.value]);
+
+  return (
+    <div>
+      <input
+        value={tempSearch}
+        placeholder="search"
+        onChange={(e) => setTempSearch(e.target.value)}
+      />
+      <button onClick={() => props.onSubmit(tempSearch)}>
+        Search
+      </button>
+    </div>
+  );
 };

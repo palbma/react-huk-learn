@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Search } from "./search";
+import { Users } from "./Users";
 
 type SearchUserType = {
   login: string;
@@ -17,61 +18,32 @@ type UsertType = {
 type SearchResult = {};
 export const Github = () => {
   const [selectedUser, setSelectedUser] = useState<SearchUserType | null>(null);
-  const [users, setUsers] = useState<SearchUserType[]>([]);
-  const [tempSearch, setTempSearch] = useState<string>("it-kamasutra");
-  const [searchTempSearch, setSearchTempSearch] =
-    useState<string>("it-kamasutra");
+  const [searchTerm, setSearchTerm] = useState("it-kamasutra");
   const [userDetails, setUserDetails] = useState<UsertType | null>(null);
 
-  const fetchData = (term: string) => {
-    axios
-      .get(`https://api.github.com/search/users?q=${term}`)
-      .then((response) => {
-        setUsers(response.data.items);
-      });
-  };
   useEffect(() => {
-    if (selectedUser) {
-      document.title = selectedUser.login;
-    }
-  }, [selectedUser]);
+    if (!selectedUser) return;
 
-  useEffect(() => {
-    fetchData(tempSearch);
-  }, [searchTempSearch]);
-
-  useEffect(() => {
-    console.log("Selected user changed:", selectedUser);
-    if (!selectedUser) {
-      console.log("No user selected");
-      return;
-    }
     axios
-      .get(`https://api.github.com/users/${selectedUser?.login}`)
-      .then((response) => {
-        setUserDetails(response.data);
-      });
+      .get(`https://api.github.com/users/${selectedUser.login}`)
+      .then(res => setUserDetails(res.data));
   }, [selectedUser]);
 
   return (
     <div>
-      <Search value="" onSubmit={(term) => setSearchTempSearch(term)} />
-      <ul>
-        {users.map((user) => (
-          <li
-            key={user.id}
-            onClick={() => {
-              setSelectedUser(user);
-            }}
-          >
-            {user.login}
-          </li>
-        ))}
-      </ul>
+      <Search value={searchTerm} onSubmit={setSearchTerm} />
+
+      <Users
+        term={searchTerm}
+        selectedUser={selectedUser}
+        onUserSelect={setSelectedUser}
+      />
+
+      <h2>{selectedUser?.login ?? "User name"}</h2>
       <div>
-        <h2>{selectedUser ? selectedUser.login : "User1 Name"}</h2>
-        <div>{userDetails ? `Followers: ${userDetails.followers}` : "Loading..."}</div>
+        {userDetails ? `Followers: ${userDetails.followers}` : "Loading..."}
       </div>
     </div>
   );
 };
+
